@@ -1,0 +1,722 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.weather.bigdata.mt.basic</groupId>
+    <artifactId>mt_commons</artifactId>
+    <version>0.0.1-felix</version>
+    <inceptionYear>2008</inceptionYear>
+    <properties>
+        <author>wufenqiang</author>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+        <timeStamp>${maven.build.timestamp}</timeStamp>
+
+        <scala.version>2.11.8</scala.version>
+        <java.version>1.8</java.version>
+        <spark.version>2.1.1</spark.version>
+        <split.version>0.0.1-felix</split.version>
+        <signal.version>0.0.1-felix</signal.version>
+        <nc_grib.version>0.0.1-felix</nc_grib.version>
+        <felixfun.version>0.0.1-felix</felixfun.version>
+        <kvstore.version>1.8</kvstore.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weather</groupId>
+            <artifactId>kvstore</artifactId>
+            <version>${kvstore.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weather.bigdata.it</groupId>
+            <artifactId>nc_grib</artifactId>
+            <version>${nc_grib.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weather.bigdata.it.utils</groupId>
+            <artifactId>felixfun</artifactId>
+            <version>${felixfun.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weather.bigdata.it.spark.platform</groupId>
+            <artifactId>split</artifactId>
+            <version>${split.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.weather.bigdata.it.spark.platform</groupId>
+            <artifactId>signal</artifactId>
+            <version>${signal.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.11</artifactId>
+            <version>${spark.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_2.11</artifactId>
+            <version>${spark.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.specs</groupId>
+            <artifactId>specs</artifactId>
+            <version>1.2.5</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+
+        <resources>
+            <resource>
+                <directory>src/main/resource</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                    <args>
+                        <arg>-target:jvm-1.5</arg>
+                    </args>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>${artifactId}_libs/</classpathPrefix>
+                            <!--<mainClass></mainClass>-->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!--将依赖包复制出-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/${artifactId}_libs/
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--将依赖注入jar包内-->
+            <!--<plugin>-->
+            <!--<artifactId>maven-assembly-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<descriptorRefs>-->
+            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+            <!--</descriptorRefs>-->
+            <!--<archive>-->
+            <!--<manifest>-->
+            <!--&lt;!&ndash;<mainClass>com.weather.bigdata.it.spark.monitorHDFS</mainClass>&ndash;&gt;-->
+            <!--</manifest>-->
+            <!--</archive>-->
+            <!--</configuration>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>make-assembly</id>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+            <!--<goal>single</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
+
+
+
+
+
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-eclipse-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<downloadSources>true</downloadSources>-->
+                    <!--<buildcommands>-->
+                        <!--<buildcommand>ch.epfl.lamp.sdt.core.scalabuilder</buildcommand>-->
+                    <!--</buildcommands>-->
+                    <!--<additionalProjectnatures>-->
+                        <!--<projectnature>ch.epfl.lamp.sdt.core.scalanature</projectnature>-->
+                    <!--</additionalProjectnatures>-->
+                    <!--<classpathContainers>-->
+                        <!--<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>-->
+                        <!--<classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>-->
+                    <!--</classpathContainers>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>${artifactId}_libs/</classpathPrefix>
+                            <!--<mainClass></mainClass>-->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!--将依赖包复制出-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/${artifactId}_libs/
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <configuration>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <pom.is.product>false</pom.is.product>
+                <spark.jars.scope>compile</spark.jars.scope>
+
+                <pom.timeStamp>${timeStamp}</pom.timeStamp>
+                <pom.local.writePathTmp>/D:/Data/tmp/</pom.local.writePathTmp>
+                <pom.hdfs.writePathTmp>/D:/tmp/</pom.hdfs.writePathTmp>
+
+                <pom.overwrite>true</pom.overwrite>
+                <pom.masterName></pom.masterName>
+
+                <pom.source.Gr2b.Open>true</pom.source.Gr2b.Open>
+                <pom.source.Obs.Open>true</pom.source.Obs.Open>
+                <pom.source.Ocf.Open>true</pom.source.Ocf.Open>
+                <pom.source.Wea.Open>true</pom.source.Wea.Open>
+                <pom.source.changeReftime.Open>true</pom.source.changeReftime.Open>
+                <pom.inputKV.Open>false</pom.inputKV.Open>
+
+                <pom.source.Gr2b.Front>false</pom.source.Gr2b.Front>
+                <pom.source.Gr2b.Forward>false</pom.source.Gr2b.Forward>
+                <pom.source.Fc.Post>true</pom.source.Fc.Post>
+
+                <pom.checkStation.Open>false</pom.checkStation.Open>
+                <pom.checkFile.Open>false</pom.checkFile.Open>
+
+                <pom.inputKVStoreOut.Open>false</pom.inputKVStoreOut.Open>
+
+                <pom.changeRFCover>true</pom.changeRFCover>
+                <pom.changeRFCoverAll>true</pom.changeRFCoverAll>
+
+                <!-- latmin,latmax,lonmin,lonmax-->
+                <pom.source.Gr2b.LatLon>0.0d,60.0d,70.0d,140.0d</pom.source.Gr2b.LatLon>
+
+                <!--(√)netcdf4,(√)ncstream,(×)netcdf3c,(×)netcdf3c64,(×)netcdf4_classic,(√)netcdf3-->
+                <!--<pom.writeCDFVersion>netcdf3</pom.writeCDFVersion>-->
+                <pom.writeCDFVersion>netcdf4</pom.writeCDFVersion>
+                <!--<pom.writeCDFVersion>ncstream</pom.writeCDFVersion>-->
+
+                <!--如使用netcdf4必须配置-->
+                <!--本地测试通过,集群测试未通过-->
+                <pom.netCDF4.dependency>/F:/RuntimeEnvironment/netCDF/netCDF_4.6.1/netCDF_NC4_4.6.1/</pom.netCDF4.dependency>
+
+                <!--可写String(√)netcdf4,(×)ncstream,(×)netcdf3,-->
+                <!--<pom.reftime.Open>true</pom.reftime.Open>-->
+
+                <pom.streamRootPath>/D:/Data/forecast/Input/Stream/</pom.streamRootPath>
+                <pom.streamSecPath>/D:/Data/forecast/Input/Stream/_*/_*.txt</pom.streamSecPath>
+                <pom.localStreamPath>/D:/Data/forecast/Input/local/Stream/</pom.localStreamPath>
+
+                <pom.index.signal.open>true</pom.index.signal.open>
+                <pom.obs.signal.open>true</pom.obs.signal.open>
+                <pom.reduceLatLon.signal.open>true</pom.reduceLatLon.signal.open>
+                <pom.index.signalPath>/D:/Data/forecast/Input/Stream/testData/</pom.index.signalPath>
+                <pom.obs.signalPath>/D:/Data/forecast/Input/Stream/testData/</pom.obs.signalPath>
+                <pom.reduceLatLon.signalPath>/D:/Data/forecast/Input/Stream/testData/</pom.reduceLatLon.signalPath>
+
+
+                <pom.typeSetRootpath>/D:/Data/forecast/Input/Stream_TypeSet/</pom.typeSetRootpath>
+                <pom.local.typeSetRootpath>/D:/Data/forecast/Input/Stream_TypeSet_local/</pom.local.typeSetRootpath>
+
+                <!--<pom.json.splitNum>77</pom.json.splitNum>-->
+                <pom.jsonFile>/D:/Data/forecast/Input/JsonPRObreak77.txt/</pom.jsonFile>
+                <!--<pom.jsonFile>/D:/Data/forecast/Input/JsonPro1break.txt/</pom.jsonFile>-->
+                <!--<pom.jsonFileTest>/D:/Data/forecast/Input/JsonPro1break.txt/</pom.jsonFileTest>-->
+                <!--<pom.jsonFile>/D:/Data/forecast/Input/JsonPRO.txt/</pom.jsonFile>-->
+                <!--<pom.jsonFile>/D:/Data/forecast/Input/JsonPRObreak.txt/</pom.jsonFile>-->
+                <!--<pom.jsonFile>/D:/Data/forecast/Input/JsonPro2break.txt/</pom.jsonFile>-->
+                <pom.jsonPath>/D:/Data/forecast/Input/</pom.jsonPath>
+                <pom.jsonLocalPath>/D:/Data/forecast/Input/localSplit/</pom.jsonLocalPath>
+                <!--<pom.jsonFileTest>/D:/Data/forecast/Input/JsonProperties_rewrite.txt</pom.jsonFileTest>-->
+                <pom.gr2bPath>/D:/Data/forecast/Input/Real/</pom.gr2bPath>
+                <pom.fcPath>/D:/Data/forecast/Output/NMC/</pom.fcPath>
+                <!--<pom.fcPath.afterObs>/D:/Data/forecast/Output/NMC/</pom.fcPath.afterObs>-->
+
+                <pom.station.changeReftime>/D:/Data/forecast/Output/station/changeReftime/</pom.station.changeReftime>
+                <pom.station.fc>/D:/Data/forecast/Output/station/fc/</pom.station.fc>
+                <pom.station.obs>/D:/Data/forecast/Output/station/obs/</pom.station.obs>
+                <pom.station.ocf>/D:/Data/forecast/Output/station/ocf/</pom.station.ocf>
+                <pom.station.inputKV>/D:/Data/forecast/Output/station/inputKV/</pom.station.inputKV>
+
+                <pom.checkoutRootPath>/D:/Data/forecast/Output/checkOut/</pom.checkoutRootPath>
+                <pom.checkoutRootPath2>/D:/Data/forecast/Output/checkOut2/</pom.checkoutRootPath2>
+                <pom.inputKVStorePath>/D:/Data/forecast/Output/inputKVStore/</pom.inputKVStorePath>
+                <pom.reduceLatLonPath>/D:/Data/forecast/Output/reduceLatLon/</pom.reduceLatLonPath>
+                <pom.inputKVStorePath.checkout>/D:/Data/forecast/Output/inputKVStore_CheckStation/
+                </pom.inputKVStorePath.checkout>
+
+
+                <pom.obsRootPath>/D:/Data/forecast/Input/NMC/obs/</pom.obsRootPath>
+                <pom.ocfRootPath>/D:/Data/forecast/Input/Ocf/</pom.ocfRootPath>
+                <!--<pom.KVStoreURL>http://172.16.185.161:6788/weatherstore/v1/api/metaapi</pom.KVStoreURL>-->
+                <pom.KVStoreURL>http://220.243.129.242:6788/weatherstore/v1/api/metaapi</pom.KVStoreURL>
+                <!--Unit:ms-->
+                <pom.KVStoretimeOut>300000</pom.KVStoretimeOut>
+
+
+                <!--预警库参数-->
+                <pom.AlarmCenter.URL>220.243.129.29:3306</pom.AlarmCenter.URL>
+                <pom.AlarmCenter.Name>alarm_weather</pom.AlarmCenter.Name>
+                <pom.AlarmCenter.Table>alarmcenter</pom.AlarmCenter.Table>
+                <pom.AlarmCenter.IDTable>alarmcenterareaid</pom.AlarmCenter.IDTable>
+                <pom.AlarmCenter.User>wufenqiang</pom.AlarmCenter.User>
+                <pom.AlarmCenter.PassWord>NCldyyC$l5CEOx3*d7Jg</pom.AlarmCenter.PassWord>
+
+
+                <pom.element.PRE.gribrElement>Total_precipitation_surface_3_Hour_Accumulation</pom.element.PRE.gribrElement>
+                <pom.element.TEM.gribrElement>Temperature_height_above_ground</pom.element.TEM.gribrElement>
+                <pom.element.CLOUD.gribrElement>Total_cloud_cover_cloud_base</pom.element.CLOUD.gribrElement>
+                <pom.element.RHU.gribrElement>Relative_humidity_height_above_ground</pom.element.RHU.gribrElement>
+                <pom.element.WIND.gribrElement>u-component_of_wind_height_above_ground,v-component_of_wind_height_above_ground</pom.element.WIND.gribrElement>
+                <pom.element.PRS.gribrElement>SP_GDS0_SFC</pom.element.PRS.gribrElement>
+                <pom.element.VIS.gribrElement>VIS_GDS0_SFC</pom.element.VIS.gribrElement>
+
+                <pom.element.PRE.attribute>
+                    {'ele':['Total_precipitation_surface_3_Hour_Accumulation'],'height':'','lat':'lat','lon':'lon','time':'time','key':'R03','rename':'PRE'}
+                </pom.element.PRE.attribute>
+                <pom.element.TEM.attribute>
+                    {'ele':['Temperature_height_above_ground'],'height':'height_above_ground','lat':'lat','lon':'lon','time':'time','key':'TMP','rename':'TEM'}
+                </pom.element.TEM.attribute>
+                <pom.element.CLOUD.attribute>
+                    {'ele':['Total_cloud_cover_cloud_base'],'height':'','lat':'lat','lon':'lon','time':'time','key':'ECT','rename':'CLOUD'}
+                </pom.element.CLOUD.attribute>
+                <pom.element.RHU.attribute>
+                    {'ele':['Relative_humidity_height_above_ground'],'height':'height_above_ground','lat':'lat','lon':'lon','time':'time','key':'RRH','rename':'RHU'}
+                </pom.element.RHU.attribute>
+                <pom.element.WIND.attribute>
+                    {'ele':['u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground'],'height':'height_above_ground','lat':'lat','lon':'lon','time':'time','key':'EDA10','rename':'WIND'}
+                </pom.element.WIND.attribute>
+                <pom.element.PRS.attribute>
+                    {'ele':['SP_GDS0_SFC'],'height':'','lat':'lat','lon':'lon','time':'time','key':'PRS','rename':'PRS'}
+                </pom.element.PRS.attribute>
+                <pom.element.PPH.attribute>
+                    {'ele':['Precipitation_type_surface_3_Hour_Accumulation'],'height':'','lat':'lat','lon':'lon','time':'time','key':'PPH','rename':'PPH'}
+                </pom.element.PPH.attribute>
+                <pom.element.VIS.attribute>
+                    {'ele':['VIS_GDS0_SFC'],'height':'','lat':'lat','lon':'lon','time':'time','key':'VIS','rename':'VIS'}
+                </pom.element.VIS.attribute>
+
+                <pom.element.WindSDName.gribwElement>WINS_value,WIND_value</pom.element.WindSDName.gribwElement>
+                <pom.element.WindSDGName.gribwElement>WINS,WIND</pom.element.WindSDGName.gribwElement>
+                <pom.element.WindUVName.gribwElement>WINU,WINV</pom.element.WindUVName.gribwElement>
+
+                <pom.element.PRE.gribPath>R03</pom.element.PRE.gribPath>
+                <pom.element.TEM.gribPath>TMP</pom.element.TEM.gribPath>
+                <pom.element.CLOUD.gribPath>ECT</pom.element.CLOUD.gribPath>
+                <pom.element.RHU.gribPath>RRH</pom.element.RHU.gribPath>
+                <pom.element.WIND.gribPath>EDA10</pom.element.WIND.gribPath>
+                <pom.element.PRS.gribPath>PRS</pom.element.PRS.gribPath>
+                <pom.element.PPH.gribPath>PPH</pom.element.PPH.gribPath>
+                <pom.element.VIS.gribPath>VIS</pom.element.VIS.gribPath>
+
+                <pom.element.TEM.RadioOffset>1d,-273.15d</pom.element.TEM.RadioOffset>
+                <pom.element.PRS.RadioOffset>0.01d,0.0d</pom.element.PRS.RadioOffset>
+
+                <pom.pph.time>time</pom.pph.time>
+                <pom.pph.lat>lat</pom.pph.lat>
+                <pom.pph.lon>lon</pom.pph.lon>
+                <pom.pph.dataName>Precipitation_type_surface_3_Hour_Accumulation</pom.pph.dataName>
+
+                <pom.obs.lat>lat</pom.obs.lat>
+                <pom.obs.lon>lon</pom.obs.lon>
+                <pom.obs.PRE>PRE10m</pom.obs.PRE>
+                <pom.obs.TEM>TEM</pom.obs.TEM>
+
+                <!--记录列数信息,从0开始-->
+                <pom.ocf.PRE>3</pom.ocf.PRE>
+                <pom.ocf.TEM>0</pom.ocf.TEM>
+                <pom.ocf.WEATHER>9</pom.ocf.WEATHER>
+
+                <pom.ocf.geoFile>/D:/Data/forecast/Input/geoPath/geo.nc</pom.ocf.geoFile>
+                <pom.temExtremPath>/D:/Data/forecast/Input/TemExtremPath/area.dat/</pom.temExtremPath>
+                <pom.stationfile0>/D:/Data/forecast/Input/stationPath/station31.dat/</pom.stationfile0>
+                <pom.stationfile1>/D:/Data/forecast/Input/stationPath/traffic_station.csv/</pom.stationfile1>
+                <pom.stationfile_stainfo_nat>/D:/Data/forecast/Input/stationPath/traffic_station.csv/
+                </pom.stationfile_stainfo_nat>
+
+
+                <pom.timeName>time</pom.timeName>
+                <pom.heightName>height_above_ground</pom.heightName>
+                <!--<pom.heightName>height</pom.heightName>-->
+                <pom.latName>lat</pom.latName>
+                <pom.lonName>lon</pom.lonName>
+
+                <!--<pom.weatherName>WEATHER</pom.weatherName>-->
+
+                <pom.os.binEnvpath>/C:/Program Files/Git/bin/bash.exe</pom.os.binEnvpath>
+
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+
+        <profile>
+            <id>prd</id>
+            <properties>
+                <pom.is.product>true</pom.is.product>
+                <spark.jars.scope>provided</spark.jars.scope>
+
+                <pom.timeStamp>${timeStamp}</pom.timeStamp>
+
+                <!--临时文件地址-->
+                <pom.local.writePathTmp>/tmp/</pom.local.writePathTmp>
+                <!--<pom.local.writePathTmp>/ser/data/tmp/forecast/forecast/</pom.local.writePathTmp>-->
+                <pom.hdfs.writePathTmp>/tmp/</pom.hdfs.writePathTmp>
+
+                <!--hdfs上传覆盖-->
+                <pom.overwrite>true</pom.overwrite>
+
+                <!--HDFS conf-->
+                <!--<pom.masterName>nameservice1</pom.masterName>-->
+                <pom.masterName>dataflow-node-1:9000</pom.masterName>
+
+                <!--信号源触发-->
+                <pom.source.Gr2b.Open>true</pom.source.Gr2b.Open>
+                <pom.source.Obs.Open>true</pom.source.Obs.Open>
+                <pom.source.Ocf.Open>true</pom.source.Ocf.Open>
+                <pom.source.Wea.Open>true</pom.source.Wea.Open>
+                <pom.source.changeReftime.Open>true</pom.source.changeReftime.Open>
+                <pom.inputKV.Open>true</pom.inputKV.Open>
+
+                <!--数据质控信号,前置质控,后置质控,lat数据替换质控-->
+                <pom.source.Gr2b.Front>false</pom.source.Gr2b.Front>
+                <pom.source.Gr2b.Forward>false</pom.source.Gr2b.Forward>
+                <pom.source.Fc.Post>true</pom.source.Fc.Post>
+
+                <!--并行运算,已升级,目前弃用-->
+                <!--<pom.source.Fc.parallel>true</pom.source.Fc.parallel>-->
+                <!--<pom.source.Obs.parallel>true</pom.source.Obs.parallel>-->
+                <!--<pom.source.Ocf.parallel>true</pom.source.Ocf.parallel>-->
+                <!--<pom.source.wea0.parallel>true</pom.source.wea0.parallel>-->
+
+                <!-- <pom.monitor.Wea0.Open>true</pom.monitor.Wea0.Open>
+                 <pom.monitor.Gr2b.Open>true</pom.monitor.Gr2b.Open>
+                 <pom.monitor.Fc.parallel>true</pom.monitor.Fc.parallel>
+                 <pom.monitor.wea0.parallel>true</pom.monitor.wea0.parallel>
+                 <pom.monitor.Gr2b.Front>false</pom.monitor.Gr2b.Front>-->
+
+                <!--站点抽取开关-->
+                <pom.checkStation.Open>true</pom.checkStation.Open>
+                <!--文件检查自动补齐开关-->
+                <pom.checkFile.Open>false</pom.checkFile.Open>
+
+                <!--输出入库前数据到pom.inputKVStorePath-->
+                <pom.inputKVStoreOut.Open>true</pom.inputKVStoreOut.Open>
+
+                <!--覆盖式备份是否开启-->
+                <pom.changeRFCover>false</pom.changeRFCover>
+                <pom.changeRFCoverAll>true</pom.changeRFCoverAll>
+
+                <!--入库时范围值,确定当前经纬度对应的入库编号“N1H_latIndex_lonIndex”-->
+                <!-- latmin,latmax,lonmin,lonmax-->
+                <pom.source.Gr2b.LatLon>0.0d,60.0d,70.0d,140.0d</pom.source.Gr2b.LatLon>
+
+                <!--nc写文件版本号-->
+                <!--(×)netcdf4,(√)ncstream,(×)netcdf3c,(×)netcdf3c64,(×)netcdf4_classic,(√)netcdf3-->
+                <!--<pom.writeCDFVersion>netcdf3</pom.writeCDFVersion>-->
+                <pom.writeCDFVersion>netcdf4</pom.writeCDFVersion>
+                <!--如使用netcdf4必须配置-->
+                <pom.netCDF4.dependency>/ser/opt/netcdf/</pom.netCDF4.dependency>
+                <!--<pom.netCDF4.dependency>/ser/opt/netCDF_4.6.1/netCDF_NC4_4.6.1/</pom.netCDF4.dependency>-->
+
+                <!--<pom.reftime.Open>true</pom.reftime.Open>-->
+                <!--<pom.reftime.Open>false</pom.reftime.Open>-->
+
+                <!--信号数据监控地址-->
+                <pom.streamRootPath>/data/dataSource/fc/grid/WEATHER/source/param/Stream/</pom.streamRootPath>
+                <pom.streamSecPath>/data/dataSource/fc/grid/WEATHER/source/param/Stream/*/*.txt</pom.streamSecPath>
+                <pom.localStreamPath>/ser/data/weather/forecast/Stream/</pom.localStreamPath>
+
+                <!--是否发射指数入库信号,实况提取最新预报信号-->
+                <pom.index.signal.open>true</pom.index.signal.open>
+                <pom.obs.signal.open>true</pom.obs.signal.open>
+                <pom.reduceLatLon.signal.open>true</pom.reduceLatLon.signal.open>
+                <pom.index.signalPath>/data/dataSource/index/monitor/</pom.index.signalPath>
+                <pom.obs.signalPath>/data/dataSource/obs/fctmonitor/</pom.obs.signalPath>
+                <pom.reduceLatLon.signalPath>/data/dataSource/fc/grid/WEATHER/source/param/Stream/ReduceLatLon/
+                </pom.reduceLatLon.signalPath>
+
+
+                <pom.typeSetRootpath>/data/dataSource/fc/grid/WEATHER/source/param/Stream_TypeSet/</pom.typeSetRootpath>
+                <pom.local.typeSetRootpath>/ser/data/weather/forecast/Stream_TypeSet/</pom.local.typeSetRootpath>
+                <!--<pom.json.splitNum>77</pom.json.splitNum>-->
+                <pom.jsonFile>/ser/hdfs/forecast/parameter/split/JsonPRObreak.txt</pom.jsonFile>
+                <!--<pom.jsonFileTest>/ser/hdfs/forecast/parameter/split/JsonPRObreak.txt</pom.jsonFileTest>-->
+                <!--<pom.jsonFileTest>/data/scispark/param/JsonProperties_rewrite.txt</pom.jsonFileTest>-->
+                <pom.jsonPath>/ser/hdfs/forecast/parameter/split/</pom.jsonPath>
+                <pom.jsonLocalPath>/ser/program/forecast/parameter/</pom.jsonLocalPath>
+
+                <!--默认NMC数据源地址-->
+                <pom.gr2bPath>/data/dataSource/fc/grid/WEATHER/source/sourceNc/</pom.gr2bPath>
+                <!--默认输出数据地址-->
+                <pom.fcPath>/data/dataSource/fc/grid/WEATHER/output/</pom.fcPath>
+                <!--默认输出obs订正后数据地址-->
+                <!--<pom.fcPath.afterObs>/data/dataSource/fc/grid/WEATHER/output/</pom.fcPath.afterObs>-->
+
+                <!--分数据类型操作计算后默认抽站输出地址-->
+                <pom.station.changeReftime>/data/dataSource/fc/station/changeReftime/</pom.station.changeReftime>
+                <pom.station.fc>/data/dataSource/fc/station/fc/</pom.station.fc>
+                <pom.station.obs>/data/dataSource/fc/station/obs/</pom.station.obs>
+                <pom.station.ocf>/data/dataSource/fc/station/ocf/</pom.station.ocf>
+                <pom.station.inputKV>/data/dataSource/fc/station/inputKV/</pom.station.inputKV>
+
+                <!--抽站地址输出地址-->
+                <pom.checkoutRootPath>/data/dataSource/fc/grid/WEATHER/output_CheckStation/</pom.checkoutRootPath>
+                <pom.checkoutRootPath2>/data/dataSource/fc/grid/WEATHER/output_InputKVStore_CheckTrafficStation/
+                </pom.checkoutRootPath2>
+                <pom.inputKVStorePath>/data/dataSource/fc/grid/WEATHER/output_InputKVStore/</pom.inputKVStorePath>
+                <pom.reduceLatLonPath>/data/dataSource/fc/grid/WEATHER/output_reduceLatLon/</pom.reduceLatLonPath>
+                <pom.inputKVStorePath.checkout>/data/dataSource/fc/grid/WEATHER/output_InputKVStore_CheckStation/
+                </pom.inputKVStorePath.checkout>
+
+                <!--抽站的站表-->
+                <pom.stationfile0>/ser/hdfs/forecast/parameter/stationPath/stationTest.dat/</pom.stationfile0>
+                <!--<pom.stationfile0>/data/dataSource/parameter/stationPath/traffic_station.csv/</pom.stationfile0>-->
+                <!--<pom.stationfile0>/data/dataSource/parameter/stationPath/stationTest.dat/</pom.stationfile0>-->
+                <pom.stationfile1>/ser/hdfs/forecast/parameter/stationPath/traffic_station.csv/</pom.stationfile1>
+                <pom.stationfile_stainfo_nat>/ser/hdfs/forecast/parameter/stationPath/traffic_station_1.csv/
+                </pom.stationfile_stainfo_nat>
+
+
+                <!--默认obs、ocf数据地址-->
+                <pom.obsRootPath>/data/dataSource/obs/grid/WTRGO/FULL/</pom.obsRootPath>
+                <pom.ocfRootPath>/data/dataSource/fc/ocf/</pom.ocfRootPath>
+
+
+                <!--入库中转机地址:获取真实入库地址-->
+                <pom.KVStoreURL>http://172.16.185.242:6788/weatherstore/v1/api/metaapi</pom.KVStoreURL>
+                <!--<pom.KVStoreURL>http://220.243.129.242:8700/weatherstore/v1/api/metaapi</pom.KVStoreURL>-->
+                <!--<pom.KVStoreURL>http://220.243.129.242:6788/weatherstore/v1/api/metaapi</pom.KVStoreURL>-->
+                <!--<pom.KVStoreURL>http://172.16.185.242:6788/weatherstore/v1/api/metaapi</pom.KVStoreURL>-->
+
+                <!--默认redis等待时间-->
+                <pom.KVStoretimeOut>30000</pom.KVStoretimeOut>
+                <!--<pom.refcPath>hdfs://nameservice1/data/scispark/realDataOut/AfterObs/</pom.refcPath>-->
+
+                <!--预警库参数,目前正在开发-->
+                <pom.AlarmCenter.URL>220.243.129.29:3306</pom.AlarmCenter.URL>
+                <pom.AlarmCenter.Name>alarm_weather</pom.AlarmCenter.Name>
+                <pom.AlarmCenter.Table>alarmcenter</pom.AlarmCenter.Table>
+                <pom.AlarmCenter.IDTable>alarmcenterareaid</pom.AlarmCenter.IDTable>
+                <pom.AlarmCenter.User>wufenqiang</pom.AlarmCenter.User>
+                <pom.AlarmCenter.PassWord>NCldyyC$l5CEOx3*d7Jg</pom.AlarmCenter.PassWord>
+
+                <!--NMC要素名称默认配置值-->
+                <pom.element.PRE.gribrElement>Total_precipitation_surface_3_Hour_Accumulation
+                </pom.element.PRE.gribrElement>
+                <pom.element.TEM.gribrElement>Temperature_height_above_ground</pom.element.TEM.gribrElement>
+                <pom.element.CLOUD.gribrElement>Total_cloud_cover_cloud_base</pom.element.CLOUD.gribrElement>
+                <pom.element.RHU.gribrElement>Relative_humidity_height_above_ground</pom.element.RHU.gribrElement>
+                <pom.element.WIND.gribrElement>
+                    u-component_of_wind_height_above_ground,v-component_of_wind_height_above_ground
+                </pom.element.WIND.gribrElement>
+                <pom.element.PRS.gribrElement>SP_GDS0_SFC</pom.element.PRS.gribrElement>
+                <pom.element.VIS.gribrElement>VIS_GDS0_SFC</pom.element.VIS.gribrElement>
+
+
+                <pom.element.PRE.gribPath>R03</pom.element.PRE.gribPath>
+                <pom.element.TEM.gribPath>TMP</pom.element.TEM.gribPath>
+                <pom.element.CLOUD.gribPath>ECT</pom.element.CLOUD.gribPath>
+                <pom.element.RHU.gribPath>RRH</pom.element.RHU.gribPath>
+                <pom.element.WIND.gribPath>EDA10</pom.element.WIND.gribPath>
+                <pom.element.PRS.gribPath>PRS</pom.element.PRS.gribPath>
+                <pom.element.PPH.gribPath>PPH</pom.element.PPH.gribPath>
+                <pom.element.VIS.gribPath>VIS</pom.element.VIS.gribPath>
+
+                <!--默认要素信号格式及配置值-->
+                <pom.element.PRE.attribute>
+                    {'ele':['Total_precipitation_surface_3_Hour_Accumulation'],'height':'','lat':'lat','lon':'lon','time':'time','key':'R03','rename':'PRE'}
+                </pom.element.PRE.attribute>
+                <pom.element.TEM.attribute>
+                    {'ele':['Temperature_height_above_ground'],'height':'height_above_ground','lat':'lat','lon':'lon','time':'time','key':'TMP','rename':'TEM'}
+                </pom.element.TEM.attribute>
+                <pom.element.CLOUD.attribute>
+                    {'ele':['Total_cloud_cover_cloud_base'],'height':'','lat':'lat','lon':'lon','time':'time','key':'ECT','rename':'CLOUD'}
+                </pom.element.CLOUD.attribute>
+                <pom.element.RHU.attribute>
+                    {'ele':['Relative_humidity_height_above_ground'],'height':'height_above_ground','lat':'lat','lon':'lon','time':'time','key':'RRH','rename':'RHU'}
+                </pom.element.RHU.attribute>
+                <pom.element.WIND.attribute>
+                    {'ele':['u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground'],'height':'height_above_ground','lat':'lat','lon':'lon','time':'time','key':'EDA10','rename':'WIND'}
+                </pom.element.WIND.attribute>
+                <pom.element.PRS.attribute>
+                    {'ele':['SP_GDS0_SFC'],'height':'','lat':'lat','lon':'lon','time':'time','key':'PRS','rename':'PRS'}
+                </pom.element.PRS.attribute>
+                <pom.element.PPH.attribute>
+                    {'ele':['Precipitation_type_surface_3_Hour_Accumulation'],'height':'','lat':'lat','lon':'lon','time':'time','key':'PPH','rename':'PPH'}
+                </pom.element.PPH.attribute>
+                <pom.element.VIS.attribute>
+                    {'ele':['VIS_GDS0_SFC'],'height':'','lat':'lat','lon':'lon','time':'time','key':'VIS','rename':'VIS'}
+                </pom.element.VIS.attribute>
+
+                <!--WIND要素写出要素名-->
+                <pom.element.WindSDName.gribwElement>WINS_value,WIND_value</pom.element.WindSDName.gribwElement>
+                <pom.element.WindSDGName.gribwElement>WINS,WIND</pom.element.WindSDGName.gribwElement>
+                <pom.element.WindUVName.gribwElement>WIN_U,WIN_V</pom.element.WindUVName.gribwElement>
+                <!--WEATHER对应写出名称-->
+                <!--<pom.weatherName>WEATHER</pom.weatherName>-->
+
+                <!--单位转换的比例参数-->
+                <pom.element.TEM.RadioOffset>1d,-273.15d</pom.element.TEM.RadioOffset>
+                <pom.element.PRS.RadioOffset>0.01d,0.0d</pom.element.PRS.RadioOffset>
+
+                <!--pph nc数据默认配置-->
+                <pom.pph.time>time</pom.pph.time>
+                <pom.pph.lat>lat</pom.pph.lat>
+                <pom.pph.lon>lon</pom.pph.lon>
+                <pom.pph.dataName>Precipitation_type_surface_3_Hour_Accumulation</pom.pph.dataName>
+
+                <!--obs nc数据默认配置-->
+                <pom.obs.lat>lat</pom.obs.lat>
+                <pom.obs.lon>lon</pom.obs.lon>
+                <pom.obs.PRE>PRE10m</pom.obs.PRE>
+                <pom.obs.TEM>TEM</pom.obs.TEM>
+
+                <!--ocf DAT数据列配置,从0开始,未开发完未设置-->
+                <pom.ocf.PRE>3</pom.ocf.PRE>
+                <pom.ocf.TEM>0</pom.ocf.TEM>
+                <pom.ocf.WEATHER>9</pom.ocf.WEATHER>
+
+                <!--ocf站点对应的格点信息-->
+                <!--<pom.ocf.geoFile>/ser/hdfs/forecast/parameter/geo/geo.nc/</pom.ocf.geoFile>-->
+                <pom.ocf.geoFile>/ser/hdfs/forecast/parameter/geo/geo.nc/</pom.ocf.geoFile>
+
+                <!--温度后置质控对应的历史极值温度-->
+                <pom.temExtremPath>/ser/hdfs/forecast/parameter/extrem/area.dat/</pom.temExtremPath>
+
+                <!--默认NMC数据的四维对应要素名-->
+                <pom.timeName>time</pom.timeName>
+                <pom.heightName>height_above_ground</pom.heightName>
+                <!--<pom.heightName>height</pom.heightName>-->
+                <pom.latName>lat</pom.latName>
+                <pom.lonName>lon</pom.lonName>
+
+                <!--bush的默认地址,用于集群启动节点脚本,测试中,未开发完全-->
+                <pom.os.binEnvpath>/bin/sh</pom.os.binEnvpath>
+
+            </properties>
+        </profile>
+
+    </profiles>
+</project>
