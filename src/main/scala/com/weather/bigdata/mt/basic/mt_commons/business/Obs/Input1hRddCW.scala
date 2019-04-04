@@ -10,8 +10,8 @@ import com.weather.bigdata.mt.basic.mt_commons.business.Fc.FcMainCW
 import com.weather.bigdata.mt.basic.mt_commons.commons.BroadcastUtil.ShareData
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.{ReadFile, ReadNcCW}
 import com.weather.bigdata.mt.basic.mt_commons.commons.WeatherFunUtil.WeatherDate
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.{Constant, PropertiesUtil}
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 
 private object Input1hRddCW {

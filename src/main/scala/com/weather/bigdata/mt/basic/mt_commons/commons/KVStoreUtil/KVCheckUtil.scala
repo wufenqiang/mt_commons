@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject
 import com.weather.bigdata.it.utils.formatUtil.DateFormatUtil
 import com.weather.bigdata.it.utils.operation.SetOperation
 import com.weather.bigdata.mt.basic.mt_commons.commons.WeatherFunUtil.WeatherDate
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 import redis.clients.jedis.Jedis
 

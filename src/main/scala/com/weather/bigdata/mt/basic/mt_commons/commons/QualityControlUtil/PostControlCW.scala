@@ -7,8 +7,8 @@ import com.weather.bigdata.it.nc_grib.core.{SciDatasetCW, VariableCW}
 import com.weather.bigdata.it.nc_grib.utils.IndexOperation
 import com.weather.bigdata.it.utils.WeatherShowtime
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.{ReadFile, WriteNcCW}
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.{Constant, PropertiesUtil}
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable.ArrayBuffer
@@ -198,7 +198,7 @@ object PostControlCW {
     /*    val msg=ws.showDateStr("QualityControl.PostControl",startTime,endTime)
         println(msg)*/
 
-    WeatherShowtime.showDateStrOut1("QualityControl.PostControl", startTime, endTime)
+    WeatherShowtime.showDateStrOut1("QualityControl.PostControl("+sci.datasetName+")", startTime, endTime)
 
     sci
   }

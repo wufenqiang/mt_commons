@@ -15,7 +15,7 @@ import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.WriteNcCW
 import com.weather.bigdata.mt.basic.mt_commons.commons.SplitUtil.{MatchSciDatasCW, SplitMatchInfo}
 import com.weather.bigdata.mt.basic.mt_commons.commons.WeatherFunUtil.WeatherDate
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.workersUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.workersUtil
 import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable

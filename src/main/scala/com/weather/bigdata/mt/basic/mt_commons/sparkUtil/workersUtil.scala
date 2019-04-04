@@ -1,4 +1,4 @@
-package com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil
+package com.weather.bigdata.mt.basic.mt_commons.sparkUtil
 
 import java.net.InetAddress
 import java.util.regex.{Matcher, Pattern}

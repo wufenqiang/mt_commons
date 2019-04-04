@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil
+package com.weather.bigdata.mt.basic.mt_commons.sparkUtil
 
 import java.net.URI
 

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject
 import com.weather.bigdata.it.spark.platform.split.Analysis
 import com.weather.bigdata.it.utils.operation.{ArrayOperation, NumOperation}
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.ReadFile
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable

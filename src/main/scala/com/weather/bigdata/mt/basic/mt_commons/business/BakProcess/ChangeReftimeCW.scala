@@ -13,8 +13,8 @@ import com.weather.bigdata.mt.basic.mt_commons.commons.BroadcastUtil.ShareData
 import com.weather.bigdata.mt.basic.mt_commons.commons.CheckFileUtil.CheckStationCW
 import com.weather.bigdata.mt.basic.mt_commons.commons.DataOperationUntil.Move.DataMoveCW
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.{ReadNcCW, WriteNcCW}
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.{Constant, PropertiesUtil}
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 

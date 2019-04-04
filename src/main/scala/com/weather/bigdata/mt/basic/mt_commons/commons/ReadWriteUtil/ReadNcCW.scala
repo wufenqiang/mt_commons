@@ -11,7 +11,7 @@ import com.weather.bigdata.it.utils.hdfsUtil.{HDFSFile, HDFSOperation1}
 import com.weather.bigdata.mt.basic.mt_commons.commons.BroadcastUtil.ShareData
 import com.weather.bigdata.mt.basic.mt_commons.commons.KVStoreUtil.IdNameMap
 import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.{ContextUtil, workersUtil}
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.{ContextUtil, workersUtil}
 import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable

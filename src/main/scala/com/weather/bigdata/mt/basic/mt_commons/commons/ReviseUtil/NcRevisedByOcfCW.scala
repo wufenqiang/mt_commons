@@ -8,8 +8,8 @@ import com.weather.bigdata.it.nc_grib.utils.IndexOperation
 import com.weather.bigdata.it.utils.formatUtil.DateFormatUtil
 import com.weather.bigdata.it.utils.operation.{ArrayOperation, DateOperation}
 import com.weather.bigdata.mt.basic.mt_commons.commons.WeatherFunUtil.WeatherDate
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.{Constant, PropertiesUtil}
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 
 //import scala.util.control.Breaks._

@@ -19,7 +19,7 @@ object WriteNcCW {
 
   def WriteNcFile_test (scidata: SciDatasetCW, resultHdfsPath: String): Boolean = {
     val ws=WriteSciCW.fromSciCW(scidata)
-    val flag = ws.write(resultHdfsPath)
+    val flag = ws.writeHDFS(resultHdfsPath)
     flag
   }
 
@@ -55,7 +55,7 @@ object WriteNcCW {
   private def WriteNcFileReturn (fileRdd: RDD[SciDatasetCW], resultHdfsPath: String): Boolean = {
     fileRdd.map(scidata => {
       val ws=WriteSciCW.fromSciCW(scidata)
-      ws.write(resultHdfsPath)
+      ws.writeHDFS(resultHdfsPath)
     }).reduce((x, y) => (x && y))
   }
 
@@ -65,7 +65,7 @@ object WriteNcCW {
 
   def WriteNcFile_addID_tmp (scidata: SciDatasetCW, resultHdfsPath: String, appID: String): Boolean = {
     val oldName: String = scidata.datasetName
-    val newName: String = oldName + appID
+    val newName: String = appID+oldName
     scidata.setName(newName)
     val flag = this.WriteNcFile_addID(scidata, resultHdfsPath, appID)
     if (flag) {
@@ -90,7 +90,7 @@ object WriteNcCW {
   private def WriteNcFile_addID (scidata: SciDatasetCW, resultHdfsPath: String, appID: String): Boolean = {
     val addAppIDscidata = AttributesOperationCW.addAppIDTrace(scidata, appID)
     val ws=WriteSciCW.fromSciCW(addAppIDscidata)
-    ws.write(resultHdfsPath)
+    ws.writeHDFS(resultHdfsPath)
   }
 
   def WriteNcFile_addID_tmpReturn (fileRdd: RDD[SciDatasetCW], resultHdfsPath: String, appID: String): Boolean = {
@@ -203,7 +203,7 @@ object WriteNcCW {
       variables.put(reftimeKey, reftimeVariable)
     }
     val ws=WriteSciCW.fromSciCW(scidata0)
-    ws.write(resultHdfsPath)
+    ws.writeHDFS(resultHdfsPath)
   }
 
   /*  private def WriteNMCNcFile(fileRdd: RDD[SciDataset]): RDD[Boolean] ={

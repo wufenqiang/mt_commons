@@ -1,4 +1,4 @@
-package com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil
+package com.weather.bigdata.mt.basic.mt_commons.sparkUtil
 
 import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
 import org.apache.spark.SparkContext

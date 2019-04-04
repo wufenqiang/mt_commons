@@ -292,23 +292,23 @@ object PropertiesUtil {
   }
 
   //预警库参数
-  val (
-    alarmURL:String,
-    alarmName:String,
-    alarmTable:String,
-    alarmIDTable:String,
-    alarmUser:String,
-    alarmPassWord:String
-    )={
-    (
-      this.prop.getProperty("alarmURL"),
-      this.prop.getProperty("alarmName"),
-      this.prop.getProperty("alarmTable"),
-      this.prop.getProperty("alarmIDTable"),
-      this.prop.getProperty("alarmUser"),
-      this.prop.getProperty("alarmPassWord")
-    )
-  }
+//  val (
+//    alarmURL:String,
+//    alarmName:String,
+//    alarmTable:String,
+//    alarmIDTable:String,
+//    alarmUser:String,
+//    alarmPassWord:String
+//    )={
+//    (
+//      this.prop.getProperty("alarmURL"),
+//      this.prop.getProperty("alarmName"),
+//      this.prop.getProperty("alarmTable"),
+//      this.prop.getProperty("alarmIDTable"),
+//      this.prop.getProperty("alarmUser"),
+//      this.prop.getProperty("alarmPassWord")
+//    )
+//  }
 
   private val (
     indexSignalRootPath:String,
@@ -842,6 +842,10 @@ object PropertiesUtil {
         for (i <- 0 to rElements_reName.length - 1) {
           dataNames_alTypetimeIAs(i) = (rElements_reName(i), Constant.Line_Between0Key)
         }
+      }else if(Constant.VIS.equals(FcType)){
+        for (i <- 0 to rElements_reName.length - 1) {
+          dataNames_alTypetimeIAs(i) = (rElements_reName(i), Constant.Line_Between1Key)
+        }
       }else {
         for(i<-0 to rElements_reName.length-1){
           dataNames_alTypetimeIAs(i) = (rElements_reName(i), Constant.LineKey)
@@ -855,14 +859,20 @@ object PropertiesUtil {
           dataNames_alTypetimeIAs(i) = (rElements_reName(i), Constant.SumKey)
         }
         dataNames_alTypetimeIAs
-      } else if (Constant.TEM.equals(FcType) || Constant.CLOUD.equals(FcType) || Constant.RHU.equals(FcType) || Constant.PRS.equals(FcType)) {
+      } else if (Constant.TEM.equals(FcType) || Constant.CLOUD.equals(FcType) || Constant.RHU.equals(FcType) ) {
         val dataNames_alTypetimeIAs = new Array[(String, String)](rElements_reName.length * 2)
         //        var j: Int = 0
         for (i <- 0 to rElements_reName.length - 1) {
-          dataNames_alTypetimeIAs(2*i) = (rElements_reName(i), Constant.MinKey)
+          dataNames_alTypetimeIAs(2 * i) = (rElements_reName(i), Constant.MinKey)
           //          j += 1
-          dataNames_alTypetimeIAs(2*i+1) = (rElements_reName(i), Constant.MaxKey)
+          dataNames_alTypetimeIAs(2 * i + 1) = (rElements_reName(i), Constant.MaxKey)
           //          j += 1
+        }
+        dataNames_alTypetimeIAs
+      }else if(Constant.PRS.equals(FcType) || Constant.VIS.equals(FcType)){
+        val dataNames_alTypetimeIAs = new Array[(String, String)](rElements_reName.length)
+        for (i <- 0 to rElements_reName.length - 1) {
+          dataNames_alTypetimeIAs(i) = (rElements_reName(i), Constant.AveKey)
         }
         dataNames_alTypetimeIAs
       } else {

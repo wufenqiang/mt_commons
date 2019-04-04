@@ -8,7 +8,7 @@ import com.weather.bigdata.mt.basic.mt_commons.commons.CheckFileUtil.CheckStatio
 import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.{ReadFile, WriteNcCW}
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReviseUtil.NcRevisedByOcfCW
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 

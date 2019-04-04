@@ -7,7 +7,7 @@ import com.weather.bigdata.it.spark.platform.split.Analysis
 import com.weather.bigdata.it.utils.operation.ArrayOperation
 import com.weather.bigdata.mt.basic.mt_commons.commons.BroadcastUtil.ShareData
 import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.workersUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.workersUtil
 
 import scala.collection.mutable
 

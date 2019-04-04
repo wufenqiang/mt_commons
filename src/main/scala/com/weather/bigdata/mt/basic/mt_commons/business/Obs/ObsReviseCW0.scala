@@ -15,7 +15,7 @@ import com.weather.bigdata.mt.basic.mt_commons.commons.{Constant, PropertiesUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.{ReadFile, ReadNcCW, ReadObsCW, WriteNcCW}
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReviseUtil.NcRevisedByObsCW
 import com.weather.bigdata.mt.basic.mt_commons.commons.WeatherFunUtil.WeatherDate
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable

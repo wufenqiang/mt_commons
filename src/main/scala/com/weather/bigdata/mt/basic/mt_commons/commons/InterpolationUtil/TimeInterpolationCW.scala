@@ -8,7 +8,7 @@ import com.weather.bigdata.it.utils.operation.ArrayOperation
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.WriteNcCW
 import com.weather.bigdata.mt.basic.mt_commons.commons.{Constant, PropertiesUtil}
 import com.weather.bigdata.mt.basic.mt_commons.commons.SplitUtil.SplitMatchInfo
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 import ucar.ma2.DataType
 
@@ -54,7 +54,7 @@ object TimeInterpolationCW extends Serializable {
     val result = if (times == null || times.isEmpty) {
       scidata
     } else {
-      //      val startTime = System.currentTimeMillis( )
+            val startTime = System.currentTimeMillis( )
 
       //      val idName = AttributesOperationCW.getIDName(scidata)
       val (timeName, heightName, latName, lonName) = varsName
@@ -107,7 +107,8 @@ object TimeInterpolationCW extends Serializable {
       //      val stateDetailRemark: JSONObject = new JSONObject( )
       //      SendMsgCW.processSend(fileList, startTime, endTime, basicRemark, processFlagStr, qualityFlagStr, stateRemark, stateDetailRemark)
       //      //--------------------------------------------------------------
-
+      val endTime = System.currentTimeMillis( )
+      WeatherShowtime.showDateStrOut1("TimeInterpolationCW("+scidata0.datasetName+")", startTime, endTime)
 
       scidata0
     }
@@ -253,6 +254,26 @@ object TimeInterpolationCW extends Serializable {
           val y0 = v.dataFloat(index0)
           val y1 = v.dataFloat(index1)
           ucarma2ArrayOperationCW.setObject(data, index, Algorithm1D.Line_Between(x0, x1, y0, y1, x, ValueMin, ValueMax))
+          index += 1
+          index0 += 1
+          index1 += 1
+        }
+      }
+    } else if (Constant.Line_Between1Key.equals(alType_timeIA)) {
+      val ValueMin: Float = 0.0f
+
+      var index, index0, index1: Int = 0
+      val x01Indexs = ArrayOperation.betweenIndex_sequence(time, times)
+      for (i <- 0 to timesLen - 1) {
+        val x = times(i)
+        val x0 = time(x01Indexs(i)(0))
+        val x1 = time(x01Indexs(i)(1))
+        index0 = x01Indexs(i)(0) * heightlatlonLen
+        index1 = x01Indexs(i)(1) * heightlatlonLen
+        for (j <- 0 to heightlatlonLen - 1) {
+          val y0 = v.dataFloat(index0)
+          val y1 = v.dataFloat(index1)
+          ucarma2ArrayOperationCW.setObject(data, index, Algorithm1D.Line_Min(x0, x1, y0, y1, x, ValueMin))
           index += 1
           index0 += 1
           index1 += 1

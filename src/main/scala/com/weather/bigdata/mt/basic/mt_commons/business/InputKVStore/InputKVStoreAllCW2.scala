@@ -11,7 +11,7 @@ import com.weather.bigdata.mt.basic.mt_commons.commons.KVStoreUtil.{KVStoreInter
 import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.ReadNcCW
 import com.weather.bigdata.mt.basic.mt_commons.commons.WeatherFunUtil.WeatherDate
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable

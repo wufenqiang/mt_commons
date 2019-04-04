@@ -10,7 +10,7 @@ import com.weather.bigdata.it.utils.formatUtil.DateFormatUtil
 import com.weather.bigdata.it.utils.operation.{ArrayOperation, DateOperation, NumOperation}
 import com.weather.bigdata.mt.basic.mt_commons.commons.Constant
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.ReadObsCW
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable.ArrayBuffer

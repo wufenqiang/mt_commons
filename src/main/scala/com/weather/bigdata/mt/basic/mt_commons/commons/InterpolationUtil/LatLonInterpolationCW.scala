@@ -7,7 +7,7 @@ import com.weather.bigdata.it.utils.WeatherShowtime
 import com.weather.bigdata.it.utils.operation.{ArrayOperation, NumOperation}
 import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.WriteNcCW
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.rdd.RDD
 import ucar.ma2.DataType
 
@@ -45,7 +45,7 @@ object LatLonInterpolationCW extends Serializable {
     val start = System.currentTimeMillis()
     val scidata0 = this.latlon_GetMainV(scidata, endStep, timeName, heightName, latName, lonName, dataNames)
     val end = System.currentTimeMillis()
-    WeatherShowtime.showDateStrOut1("Interpolation", start, end)
+    WeatherShowtime.showDateStrOut1("LatLonInterpolationCW("+scidata0.datasetName+")", start, end)
 
     //    val fcType = AttributesOperationCW.getFcType(scidata0)
     //    val idName = AttributesOperationCW.getIDName(scidata0)

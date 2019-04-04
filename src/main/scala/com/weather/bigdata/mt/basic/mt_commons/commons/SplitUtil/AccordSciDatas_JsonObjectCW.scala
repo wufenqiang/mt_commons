@@ -13,7 +13,7 @@ import com.weather.bigdata.mt.basic.mt_commons.commons.BroadcastUtil.ShareData
 import com.weather.bigdata.mt.basic.mt_commons.commons.PropertiesUtil
 import com.weather.bigdata.mt.basic.mt_commons.commons.ReadWriteUtil.{ReadNcCW, WriteNcCW}
 import com.weather.bigdata.mt.basic.mt_commons.commons.reNameUtil.reName_AfterSplitCW
-import com.weather.bigdata.mt.basic.mt_commons.commons.sparkUtil.ContextUtil
+import com.weather.bigdata.mt.basic.mt_commons.sparkUtil.ContextUtil
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import ucar.ma2.DataType
@@ -56,7 +56,7 @@ object AccordSciDatas_JsonObjectCW {
       val scidatanew = new SciDatasetCW(mainV, att, sciDatasetName_new)
 
       val end = System.currentTimeMillis( )
-      WeatherShowtime.showDateStrOut1("AccSciRdd", start, end, sciDatasetName_old + "=>" + sciDatasetName_new)
+      WeatherShowtime.showDateStrOut1("AccSciRdd("+scidatanew.datasetName+")", start, end, sciDatasetName_old + "=>" + sciDatasetName_new)
       scidatanew
     })
     unSplitesciDataValue.unpersist( )

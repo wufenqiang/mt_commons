@@ -22,6 +22,7 @@ object Constant {
   val LineKey:String="Line"
   val Line_PercentKey:String="Line_Percent"
   val Line_Between0Key:String="Line_Between_300_1080"
+  val Line_Between1Key:String="Line_Between_0"
   val DifferenceKey:String="Difference"
   val AveKey:String="Ave"
   val SumKey:String="Sum"
